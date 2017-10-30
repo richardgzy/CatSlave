@@ -7,15 +7,25 @@
 //
 
 import UIKit
+import Firebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    
+    var currentUserID: String?
+    //default value
+    var cameraTakingInterval: TimeInterval = 30.0
+    var cameraTakingModeIsPhoto: Bool = true
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        //init Firebase
+        FirebaseApp.configure()
+
+        // set the status bar to white
+        application.statusBarStyle = .lightContent
         return true
     }
 

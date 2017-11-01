@@ -7,18 +7,23 @@
 //
 
 import UIKit
+import CoreLocation
 
 class Position: NSObject {
     var timeStamp: Date?
-    var latitude: Double?
-    var longitude: Double?
+    var coordinate: CLLocation?
     
     override init() {
+        super.init()
     }
     
     init(timeStamp: Date, latitude: Double, longitude: Double){
         self.timeStamp = timeStamp
-        self.latitude = latitude
-        self.longitude = longitude
+        self.coordinate = CLLocation(latitude: latitude, longitude: longitude)
+        super.init()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }

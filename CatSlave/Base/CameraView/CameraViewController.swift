@@ -19,7 +19,6 @@ class CameraViewController: UIViewController {
     
     var firebaseRef: DatabaseReference?
     var firebaseStorage: StorageReference?
-    var firebaseObserverID: UInt?
     var appDelegate = UIApplication.shared.delegate as! AppDelegate
     var videoDownloadURL: String?
     
@@ -31,7 +30,7 @@ class CameraViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         firebaseRef = Database.database().reference(withPath: "UXzbRyL7p4gj1yf4nY1lHZRhc9l2/data")
-        firebaseObserverID = firebaseRef!.observe(DataEventType.value, with: { (snapshot) in
+        _ = firebaseRef!.observe(DataEventType.value, with: { (snapshot) in
             // Get download URL from snapshot
             let dictionary = snapshot.value as! [String: AnyObject]
             let cameraDictionary = dictionary["camera"] as! [String: AnyObject]
@@ -45,12 +44,20 @@ class CameraViewController: UIViewController {
                 self.videoModeLabel.isHidden = true
                 self.playVideoButton.isHidden = true
                 
-                // Create a storage reference from the URL
-                let storageRef = Storage.storage().reference(forURL: imageDownloadURL)
-                // Download the data, assuming a max size of 1MB (you can change this as necessary)
-                storageRef.getData(maxSize: 1 * 1024 * 1024) { (data, error) -> Void in
-                    let pic = UIImage(data: data!)
-                    self.catImageView.image = pic!
+//                // Create a storage reference from the URL
+//                let storageRef = Storage.storage().reference(forURL: imageDownloadURL)
+//                // Download the data, assuming a max size of 1MB (you can change this as necessary)
+//                storageRef.getData(maxSize: 1 * 1024 * 1024) { (data, error) -> Void in
+//                    let pic = UIImage(data: data!)
+//                    self.catImageView.image = pic!
+//                }
+                if let image_url = URL(string: imageDownloadURL){
+                    do{
+                        let data = try Data(contentsOf: image_url)
+                        self.catImageView.image = UIImage(data: data)
+                    }catch let err{
+                        self.showFailMessage(view: self.view, message: "Error happened when loading image: \(err)")
+                    }
                 }
             }else{
                 self.catImageView.isHidden = true
@@ -60,25 +67,27 @@ class CameraViewController: UIViewController {
         })
     }
     
-//    func load_image(image_url_string:String, view:UIImageView)
-//    {
-//
-//        var image_url: NSURL = NSURL(string: image_url_string)!
-//        let image_from_url_request: NSURLRequest = NSURLRequest(url: image_url as URL)
-//
-//        NSURLConnection.sendAsynchronousRequest(
-//            image_from_url_request as URLRequest as URLRequest, queue: OperationQueue.mainQueue,
-//            completionHandler: {(response: URLResponse!,
-//                data: NSData!,
-//                error: NSError!) -> Void in
-//
-//                if error == nil && data != nil {
-//                    view.image = UIImage(data: data)
-//                }
-//
-//        })
-//
-//    }
+    func load_image(image_url_string:String)
+    {
+        let image_url = URL(string: image_url_string)!
+        _ = URLSession.shared.dataTask(with: image_url){(data, response, error) in
+            if error != nil{
+                self.showFailMessage(view: self.view, message: "Error loading Image")
+            }else{
+                var documentsDirectory: String?
+                var paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+                if paths.count > 0{
+                    documentsDirectory = paths[0]
+                    let savePath = documentsDirectory! + image_url_string
+                    FileManager.default.createFile(atPath: savePath, contents: data, attributes: nil)
+                    DispatchQueue.main.async {
+                        self.catImageView.image = UIImage(named: savePath)
+                    }
+                }
+            }
+            
+        }
+    }
     
     @IBAction func playVideo(_ sender: Any) {
         if videoDownloadURL != nil{

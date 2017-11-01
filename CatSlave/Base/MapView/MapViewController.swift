@@ -17,11 +17,18 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     @IBOutlet weak var historyButton: UIBarButtonItem!
     
     var firebaseRef: DatabaseReference?
-    var firebaseObserverID: UInt?
     var locationManager = CLLocationManager()
     var positionList = [Position]()
     var catCurrentPosition: Position?
+    var userLocation: CLLocation?
     var geodesic: MKGeodesicPolyline?
+    
+    //geofencing
+    var geofencingSwitch: Bool?
+    var distanceForNotification: Double?
+    var distanceMode: String?
+    var homeCoordinate: CLLocation?
+    var address: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,32 +47,70 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
             mapView.delegate = self
             
             firebaseRef = Database.database().reference(withPath: "UXzbRyL7p4gj1yf4nY1lHZRhc9l2/data")
-            firebaseObserverID = firebaseRef!.observe(DataEventType.value, with: { (snapshot) in
-                    self.positionList.removeAll()
-                    let dictionary = snapshot.value as! [String: AnyObject]
+            _ = firebaseRef!.observe(DataEventType.value, with: { (snapshot) in
+                self.positionList.removeAll()
+                let dictionary = snapshot.value as! [String: AnyObject]
+            
+                let catCurrentPosition = Position()
+            
+                let positionData = dictionary["position"] as! [String: AnyObject]
+                let timeStampString = positionData["timeStamp"] as? String
+            
+                //transfer date string to Date
+                catCurrentPosition.timeStamp = Utility.formateStringToDate(dateString: timeStampString!, dateFormat: "YYYY-MM-DD hh:mm:ss", timeZoneStringAbbreviation: "GMT+0:00")
+            
+                let latitude = positionData["latitude"] as? Double
+                let longitude = positionData["longitude"] as? Double
+                catCurrentPosition.coordinate = CLLocation(latitude: latitude!, longitude: longitude!)
                 
-                    let catCurrentPosition = Position()
+                self.positionList.append(catCurrentPosition)
+                self.catCurrentPosition = catCurrentPosition
+                self.showCatCurrentPosition(position: catCurrentPosition)
                 
-                    let positionData = dictionary["position"] as! [String: AnyObject]
-                    let timeStampString = positionData["timeStamp"] as? String
-                
-                    //transfer date string to Date
-                    catCurrentPosition.timeStamp = Utility.formateStringToDate(dateString: timeStampString!, dateFormat: "YYYY-MM-DD hh:mm:ss", timeZoneStringAbbreviation: "GMT+0:00")
-                    catCurrentPosition.latitude = positionData["latitude"] as? Double
-                    catCurrentPosition.longitude = positionData["longitude"] as? Double
-                
-                    self.positionList.append(catCurrentPosition)
-                    self.catCurrentPosition = catCurrentPosition
-                    self.showCatCurrentPosition(position: catCurrentPosition)
+                self.geofencingSwitch = dictionary["geofencingSwitch"] as? Bool
+                self.distanceForNotification = dictionary["distanceForNotification"] as? Double
+                self.distanceMode = dictionary["trackDistanceMode"] as? String
+            
+                if self.distanceMode == "home"{
+                    let homePosition = dictionary["home"] as! [String: AnyObject]
+                    self.homeCoordinate = CLLocation(latitude: homePosition["latitude"] as! Double, longitude: homePosition["longitude"] as! Double)
+                    self.address = homePosition["address"] as? String
+                    self.showHomeAnnotation()
+                }
+            
+            
+                if self.geofencingSwitch!{
+                    if self.distanceMode == "home"{
+                        //track distance to home
+                        let distanceInMeters = catCurrentPosition.coordinate!.distance(from: self.homeCoordinate!)
+                        if distanceInMeters >= self.distanceForNotification!{
+                            self.showAlertMessage(message: "Cat run too far from home!")
+                        }
+                    }else{
+                        //track distance to me
+                        if self.userLocation != nil{
+                            let distanceInMeters = catCurrentPosition.coordinate!.distance(from: self.userLocation!)
+                            if distanceInMeters >= self.distanceForNotification!{
+                                self.showAlertMessage(message: "Cat run too far from you!")
+                            }
+                        }
+                    }
+                }
             })
         }
+    }
+    
+    func showHomeAnnotation(){
+        let annotation = CatAnnotation(newCoordinate: (homeCoordinate?.coordinate)!, newTItle: "My Home", newSubtitle: "Geofencing from home enabled", newImage: UIImage(named: "icons8-home-filled")!)
+        
+        self.mapView.addAnnotation(annotation)
     }
     
     func showCatCurrentPosition(position: Position){
         let allAnnotation = self.mapView.annotations
         mapView.removeAnnotations(allAnnotation)
         
-        let coordinate = CLLocationCoordinate2D(latitude: position.latitude!, longitude: position.longitude!)
+        let coordinate = position.coordinate!.coordinate
         let dateString = Utility.formatDateToString(date: position.timeStamp!, dateFormat: "YYYY-MM-DD, hh:mm:ss")
         let annotation = CatAnnotation(newCoordinate: coordinate, newTItle: "Meow!", newSubtitle: dateString, newImage: UIImage(named: "icons8-Black Cat Filled-64")!)
         
@@ -77,6 +122,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         if annotation is MKUserLocation {
             return nil
         }
+
         let reuseId = "restaurantAnnotation"
         var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId)
         annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
@@ -91,6 +137,9 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
 
         // logo image
         var logoImage = UIImage(named: "icons8-Black Cat Filled-64")
+        if annotation.title! == "My Home"{
+            logoImage = UIImage(named: "icons8-home-filled")
+        }
         let sizeChange = CGSize(width: 32,height: 32)
         UIGraphicsBeginImageContextWithOptions(sizeChange, false, 0.0)
         logoImage?.draw(in: CGRect(origin: (annotationView?.frame.origin)!, size: sizeChange))
@@ -103,9 +152,10 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     
     // did updated location
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        if let location = locations.first {
+        if locations.first != nil {
+            userLocation = locations.first
             let span = MKCoordinateSpanMake(0.01, 0.01)
-            let region = MKCoordinateRegion(center: location.coordinate, span: span)
+            let region = MKCoordinateRegion(center: userLocation!.coordinate, span: span)
             mapView.setRegion(region, animated: true)
         }
     }
@@ -133,11 +183,11 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     @IBAction func showCatLocation(_ sender: Any) {
         showCatCurrentPosition(position: catCurrentPosition!)
         let span = MKCoordinateSpanMake(0.01, 0.01)
-        let coordinate = CLLocationCoordinate2DMake(catCurrentPosition!.latitude!, catCurrentPosition!.longitude!)
-        let region = MKCoordinateRegion(center: coordinate, span: span)
+        let coordinate = catCurrentPosition?.coordinate!.coordinate
+        let region = MKCoordinateRegion(center: coordinate!, span: span)
         mapView.setRegion(region, animated: true)
         
-        mapView.setCenter(CLLocationCoordinate2DMake((catCurrentPosition?.latitude)!, (catCurrentPosition?.longitude)!), animated: true)
+        mapView.setCenter((catCurrentPosition?.coordinate?.coordinate)!, animated: true)
     }
     
     @IBAction func historyButtonClick(_ sender: Any) {
@@ -156,6 +206,10 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         else{
             mapView.remove(geodesic!)
             showCatLocation(sender: (Any).self)
+            if homeCoordinate != nil && distanceMode == "home"{
+                showHomeAnnotation()
+            }
+            self.mapView.showAnnotations(self.mapView.annotations, animated: true)
             historyButton?.title = "History"
         }
     }
@@ -182,5 +236,18 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     
     @IBAction func myLocation(_ sender: Any) {
         self.mapView.setUserTrackingMode(MKUserTrackingMode.follow, animated: true)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "mapToGeofencingSegue"{
+            let destinationVC = segue.destination as! GeofencingSettingViewController
+            destinationVC.switchIsOn = self.geofencingSwitch!
+            destinationVC.distance = self.distanceForNotification!
+            destinationVC.distanceMode = self.distanceMode!
+            if self.distanceMode == "home"{
+                destinationVC.homeCoordinate = self.homeCoordinate!
+                destinationVC.address = self.address!
+            }
+        }
     }
 }

@@ -25,6 +25,7 @@
 		13837EEB1F8B5E16008E685C /* CONST.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13837EEA1F8B5E16008E685C /* CONST.swift */; };
 		13837EF51F8B69C7008E685C /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13837EF41F8B69C7008E685C /* MapViewController.swift */; };
 		735212B3A6EDF881925B453E /* Pods_CatSlave.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C59E3AAA4A86B60A03DFF43 /* Pods_CatSlave.framework */; };
+		79200C7C1FA700F00015D878 /* GeofencingSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79200C7B1FA700F00015D878 /* GeofencingSettingViewController.swift */; };
 		7987FD331F942CFE00916942 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7987FD321F942CFD00916942 /* GoogleService-Info.plist */; };
 		7987FD361F943AD600916942 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7987FD351F943AD600916942 /* LoginController.swift */; };
 		7987FD381F943F6600916942 /* SignupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7987FD371F943F6600916942 /* SignupController.swift */; };
@@ -81,6 +82,7 @@
 		13837EF81F8B79A5008E685C /* MyTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTabBarController.swift; sourceTree = "<group>"; };
 		6CD383176EE546A696DE243F /* Pods-CatSlave.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CatSlave.release.xcconfig"; path = "Pods/Target Support Files/Pods-CatSlave/Pods-CatSlave.release.xcconfig"; sourceTree = "<group>"; };
 		79200C7A1FA5B0E60015D878 /* CatSlave-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CatSlave-Bridging-Header.h"; sourceTree = "<group>"; };
+		79200C7B1FA700F00015D878 /* GeofencingSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeofencingSettingViewController.swift; sourceTree = "<group>"; };
 		7987FD321F942CFD00916942 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7987FD351F943AD600916942 /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		7987FD371F943F6600916942 /* SignupController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupController.swift; sourceTree = "<group>"; };
@@ -204,6 +206,7 @@
 			children = (
 				13837EF41F8B69C7008E685C /* MapViewController.swift */,
 				79F0CA5D1F9D8C1E0018ED9F /* CatAnnotation.swift */,
+				79200C7B1FA700F00015D878 /* GeofencingSettingViewController.swift */,
 			);
 			path = MapView;
 			sourceTree = "<group>";
@@ -497,6 +500,7 @@
 				1331F59E1F8B85740003BA61 /* StringExtension.swift in Sources */,
 				1331F59F1F8B85740003BA61 /* UIColorExtension.swift in Sources */,
 				79C76A1D1F98AE2C009F406D /* Position.swift in Sources */,
+				79200C7C1FA700F00015D878 /* GeofencingSettingViewController.swift in Sources */,
 				1331F5A01F8B85740003BA61 /* UIScrollViewExtension.swift in Sources */,
 				79C76A201F9A2CF8009F406D /* MyCatViewController.swift in Sources */,
 				1331F5A11F8B85740003BA61 /* UIViewControllerExtension.swift in Sources */,

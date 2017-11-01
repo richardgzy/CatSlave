@@ -16,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var currentUserID: String?
     //default value
-    var cameraTakingInterval: TimeInterval = 30.0
+    var cameraTakingInterval: Int = 30
     var cameraTakingModeIsPhoto: Bool = true
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {

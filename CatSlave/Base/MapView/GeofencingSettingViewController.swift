@@ -20,6 +20,8 @@ class GeofencingSettingViewController: UIViewController {
     @IBOutlet weak var distanceLabel: UILabel!
     
     var firebasePostRef: DatabaseReference?
+    var appDelegate = UIApplication.shared.delegate as! AppDelegate
+    var currentUserId: String?
     var homeCoordinate: CLLocation?
     var switchIsOn: Bool?
     var distance: Double?
@@ -41,6 +43,7 @@ class GeofencingSettingViewController: UIViewController {
         distanceSlider(Any.self)
         
         firebasePostRef = Database.database().reference()
+        currentUserId = appDelegate.currentUserID!
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -56,6 +59,7 @@ class GeofencingSettingViewController: UIViewController {
         distanceModeSegmentControl(Any.self)
     }
     
+    // generate lat/long using address entered, CLGeocoder
     @IBAction func setHomeAddress(_ sender: Any) {
         let address = addresstf.text!
         
@@ -81,6 +85,7 @@ class GeofencingSettingViewController: UIViewController {
         }
     }
     
+    //segment control, change cat distance monitoring mode to home or me
     @IBAction func distanceModeSegmentControl(_ sender: Any) {
         if distanceModeSegmentControl.selectedSegmentIndex == 0{
             addressLabel.isHidden = true
@@ -93,6 +98,7 @@ class GeofencingSettingViewController: UIViewController {
         }
     }
     
+    //distance slider changed
     @IBAction func distanceSlider(_ sender: Any) {
         let distance = distanceSlider.value
         distanceLabel.text = String(format: "%.2f", distance)
@@ -103,24 +109,25 @@ class GeofencingSettingViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    //save all changes made to firebase
     @IBAction func saveAllChanges(_ sender: Any) {
-        firebasePostRef!.child("UXzbRyL7p4gj1yf4nY1lHZRhc9l2/data/geofencingSwitch").setValue(geofencingSwitch.isOn)
+        firebasePostRef!.child("\(currentUserId!)/data/geofencingSwitch").setValue(geofencingSwitch.isOn)
         
-        firebasePostRef!.child("UXzbRyL7p4gj1yf4nY1lHZRhc9l2/data/distanceForNotification").setValue(distanceSlider.value)
+        firebasePostRef!.child("\(currentUserId!)/data/distanceForNotification").setValue(distanceSlider.value)
         
         if distanceModeSegmentControl.selectedSegmentIndex == 0 {
-            firebasePostRef!.child("UXzbRyL7p4gj1yf4nY1lHZRhc9l2/data/trackDistanceMode").setValue("me")
+            firebasePostRef!.child("\(currentUserId!)/data/trackDistanceMode").setValue("me")
         }else{
-            firebasePostRef!.child("UXzbRyL7p4gj1yf4nY1lHZRhc9l2/data/trackDistanceMode").setValue("home")
+            firebasePostRef!.child("\(currentUserId!)/data/trackDistanceMode").setValue("home")
             
             if homeCoordinate == nil{
                 self.showFailMessage(view: self.view, message: "Please enter a valid home address and continue")
                 return
             }
             
-            firebasePostRef!.child("UXzbRyL7p4gj1yf4nY1lHZRhc9l2/data/home/latitude").setValue(homeCoordinate?.coordinate.latitude)
-            firebasePostRef!.child("UXzbRyL7p4gj1yf4nY1lHZRhc9l2/data/home/longitude").setValue(homeCoordinate?.coordinate.longitude)
-            firebasePostRef!.child("UXzbRyL7p4gj1yf4nY1lHZRhc9l2/data/home/address").setValue(addresstf.text!)
+            firebasePostRef!.child("\(currentUserId!)/data/home/latitude").setValue(homeCoordinate?.coordinate.latitude)
+            firebasePostRef!.child("\(currentUserId!)/data/home/longitude").setValue(homeCoordinate?.coordinate.longitude)
+            firebasePostRef!.child("\(currentUserId!)/data/home/address").setValue(addresstf.text!)
         }
         
         self.showSucceedMessage(view: self.view, message: "All geofencing settings saved successfully")

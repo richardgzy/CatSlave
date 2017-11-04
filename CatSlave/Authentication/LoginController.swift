@@ -7,12 +7,15 @@
 //
 
 import UIKit
+import Firebase
 import FirebaseAuth
 
 class LoginController: UIViewController {
     
     @IBOutlet weak var emailtf: MyTextField!
     @IBOutlet weak var passwordtf: MyTextField!
+    
+    var firebasePostRef: DatabaseReference?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,6 +28,8 @@ class LoginController: UIViewController {
         self.passwordtf.maxLength = 15
         self.passwordtf.tfName = "Password"
         self.passwordtf.vc = self
+        
+        firebasePostRef = Database.database().reference()
     }
 
     override func didReceiveMemoryWarning() {
@@ -32,6 +37,7 @@ class LoginController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    //try to log in when button clicked
     @IBAction func login(_ sender: Any) {
         let email = self.emailtf.text!
         let password = self.passwordtf.text!
@@ -51,6 +57,12 @@ class LoginController: UIViewController {
             }
             else
             {
+                var appdelegate = UIApplication.shared.delegate as! AppDelegate
+                appdelegate.currentUserID = user?.uid
+                
+               //update firebase current user id therefore notify backend
+                self.firebasePostRef!.child("currentUserId").setValue(appdelegate.currentUserID)
+                
                 // login succeed
                 self.showSucceedMessage(view: self.view, message: "Log in Successfully")
                 

@@ -21,15 +21,18 @@ class CameraViewController: UIViewController {
     var firebaseStorage: StorageReference?
     var appDelegate = UIApplication.shared.delegate as! AppDelegate
     var videoDownloadURL: String?
+    let appdelegate = UIApplication.shared.delegate as! AppDelegate
+    var currentUserId: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         videoModeLabel.isHidden = true
         playVideoButton.isHidden = true
+        currentUserId = appdelegate.currentUserID!
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        firebaseRef = Database.database().reference(withPath: "UXzbRyL7p4gj1yf4nY1lHZRhc9l2/data")
+        firebaseRef = Database.database().reference(withPath: "\(currentUserId!)/data")
         _ = firebaseRef!.observe(DataEventType.value, with: { (snapshot) in
             // Get download URL from snapshot
             let dictionary = snapshot.value as! [String: AnyObject]
@@ -67,34 +70,14 @@ class CameraViewController: UIViewController {
         })
     }
     
-    func load_image(image_url_string:String)
-    {
-        let image_url = URL(string: image_url_string)!
-        _ = URLSession.shared.dataTask(with: image_url){(data, response, error) in
-            if error != nil{
-                self.showFailMessage(view: self.view, message: "Error loading Image")
-            }else{
-                var documentsDirectory: String?
-                var paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
-                if paths.count > 0{
-                    documentsDirectory = paths[0]
-                    let savePath = documentsDirectory! + image_url_string
-                    FileManager.default.createFile(atPath: savePath, contents: data, attributes: nil)
-                    DispatchQueue.main.async {
-                        self.catImageView.image = UIImage(named: savePath)
-                    }
-                }
-            }
-            
-        }
-    }
-    
+    //play video button clicked
     @IBAction func playVideo(_ sender: Any) {
         if videoDownloadURL != nil{
             playVideoUsingURLString(urlString: videoDownloadURL!)
         }
     }
     
+    //play video using AVPlayer and url
     func playVideoUsingURLString(urlString: String){
         let videoURL = URL(string: urlString)
         let player = AVPlayer(url: videoURL!)

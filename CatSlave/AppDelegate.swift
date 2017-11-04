@@ -15,15 +15,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     var currentUserID: String?
+    var handle: AuthStateDidChangeListenerHandle?
     //default value
     var cameraTakingInterval: Int = 30
     var cameraTakingModeIsPhoto: Bool = true
+    
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
         //init Firebase
         FirebaseApp.configure()
-
+        
         // set the status bar to white
         application.statusBarStyle = .lightContent
         return true
@@ -49,6 +51,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+//        Auth.auth().removeStateDidChangeListener(handle!)
     }
 
 

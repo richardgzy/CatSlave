@@ -29,60 +29,78 @@ class MyCatViewController: UIViewController {
     var appDelegate = UIApplication.shared.delegate as! AppDelegate
     var firebaseRef: DatabaseReference?
     var firebaseUpdateRef: DatabaseReference?
+    var currentUserId: String?
 //    var handle: AuthStateDidChangeListenerHandle?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        currentUserId = appDelegate.currentUserID!
         firebaseUpdateRef = Database.database().reference()
-        
-        firebaseRef = Database.database().reference(withPath: "UXzbRyL7p4gj1yf4nY1lHZRhc9l2")
+        firebaseRef = Database.database().reference(withPath: "\(currentUserId!)")
         _ = firebaseRef!.observe(DataEventType.value, with: { (snapshot) in
-                let dictionary = snapshot.value as! [String: AnyObject]
-                let data = dictionary["data"] as! [String: AnyObject]
-                let sensorControlData = dictionary["sensorControl"] as! [String: AnyObject]
-                
-                let catName = data["catName"] as! String
-                let catAge = data["catAge"] as! Int
-                
-                self.catNameLabel.text = catName
-                self.catAgeLabel.text = String(catAge)
-                
-                let profile = data["profile"] as! String
-                
-                // Create a storage reference from the URL
-                let storageRef = Storage.storage().reference(forURL: profile)
-                // Download the data, assuming a max size of 1MB (you can change this as necessary)
-                storageRef.getData(maxSize: 1 * 150 * 150) { (data, error) -> Void in
-                    let pic = UIImage(data: data!)
-                    self.profileImageView.image = pic!
-                }
+            let dictionary = snapshot.value as! [String: AnyObject]
+            let data = dictionary["data"] as! [String: AnyObject]
+            let sensorControlData = dictionary["sensorControl"] as! [String: AnyObject]
             
-                let interval = sensorControlData["takingIntervalInSeconds"] as! Int
-                switch interval{
-                case 30:
-                    self.intervalSegmentControl.selectedSegmentIndex = 0
-                    break
-                case 45:
-                    self.intervalSegmentControl.selectedSegmentIndex = 1
-                    break
-                case 60:
-                    self.intervalSegmentControl.selectedSegmentIndex = 2
-                    break
-                case 300:
-                    self.intervalSegmentControl.selectedSegmentIndex = 3
-                    break
-                case 600:
-                    self.intervalSegmentControl.selectedSegmentIndex = 4
-                    break
-                default:
-                    self.intervalSegmentControl.selectedSegmentIndex = 0
-                    break
-                }
+            let catName = data["catName"] as! String
+            let catAge = data["catAge"] as! Int
             
-                let moisture = data["moisture"] as! [String: AnyObject]
-                let moistureValue = moisture["moistureValue"] as! Float
-                self.humidityLabel.text = "Humidity: \(String(moistureValue))"
+            self.catNameLabel.text = catName
+            self.catAgeLabel.text = String(catAge)
+            
+            let profile = data["profile"] as! String
+            
+//                let storageRef = Storage.storage().reference(forURL: profile)
+                // Download the data, a max size of 1MB
+//                storageRef.getData(maxSize: 1 * 150 * 150) { (data, error) -> Void in
+//                    guard error == nil else {
+//                        self.showFailMessage(view: self.view, message: "Error occured when loading profile image")
+//                        return
+//                    }
+//                    let pic = UIImage(data: data!)
+//                    self.profileImageView.image = pic!
+//                }
+            if let image_url = URL(string: profile){
+                do{
+                    let data = try Data(contentsOf: image_url)
+                    self.profileImageView.image = UIImage(data: data)
+                }catch let err{
+                    self.showFailMessage(view: self.view, message: "Error happened when loading image: \(err)")
+                }
+            }
+            
+            let interval = sensorControlData["takingIntervalInSeconds"] as! Int
+            switch interval{
+            case 30:
+                self.intervalSegmentControl.selectedSegmentIndex = 0
+                break
+            case 45:
+                self.intervalSegmentControl.selectedSegmentIndex = 1
+                break
+            case 60:
+                self.intervalSegmentControl.selectedSegmentIndex = 2
+                break
+            case 300:
+                self.intervalSegmentControl.selectedSegmentIndex = 3
+                break
+            case 600:
+                self.intervalSegmentControl.selectedSegmentIndex = 4
+                break
+            default:
+                self.intervalSegmentControl.selectedSegmentIndex = 0
+                break
+            }
+        
+            let moisture = data["moisture"] as! [String: AnyObject]
+            let moistureValue = moisture["moistureValue"] as! Float
+            // litter need to be changed when humidity is greater than 700
+            if moistureValue >= 700.00{
+                self.humidityLabel.text = "Humidity: \(String(moistureValue)) (Need to scoop litter!)"
+                self.showAlertMessage(message: "Cat litter need to be changed!")
+            }else{
+                self.humidityLabel.text = "Humidity: \(String(moistureValue)) (Normal)"
+            }
         })
     }
     
@@ -137,7 +155,7 @@ class MyCatViewController: UIViewController {
             appDelegate.cameraTakingInterval = 30
             break
         }
-        self.firebaseUpdateRef!.child("UXzbRyL7p4gj1yf4nY1lHZRhc9l2/sensorControl/takingIntervalInSeconds").setValue(appDelegate.cameraTakingInterval)
+        self.firebaseUpdateRef!.child("\(currentUserId!)/sensorControl/takingIntervalInSeconds").setValue(appDelegate.cameraTakingInterval)
     }
     
     @IBAction func logOut(_ sender: Any) {
@@ -157,6 +175,17 @@ class MyCatViewController: UIViewController {
             }
         }else{
             self.showAlertMessage(message: "You are already logged off")
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "myCatToEditCatSegue"{
+            let vc = segue.destination as! EditCatViewController
+            vc.catName = catNameLabel.text!
+            vc.catAge = catAgeLabel.text!
+            if profileImageView.image != nil{
+                vc.profileImage = profileImageView.image!
+            }
         }
     }
 }

@@ -48,7 +48,8 @@ struct Utility {
     }
     
     //get current date and time String
-    static func getCurrentDateTime(){
-        
+    static func getCurrentDateTimeString() -> String{
+        let date = Date()
+        return formatDateToString(date: date, dateFormat: "yyyy-mm-dd hh:mm:ss")
     }
 }

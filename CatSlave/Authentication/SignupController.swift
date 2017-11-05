@@ -92,6 +92,8 @@ class SignupController: UIViewController, UIPickerViewDelegate, UIPickerViewData
             newUid = (user?.uid)!
         
             //set up user information and defalut value
+            let currentDateString = Utility.getCurrentDateTimeString()
+            
             self.firebasePostRef?.child("\(newUid)/data").setValue(["catName": catName])
             self.firebasePostRef?.child("\(newUid)/data/catAge").setValue(catAge)
             self.firebasePostRef?.child("\(newUid)/data/distanceForNotification").setValue(100)
@@ -113,8 +115,29 @@ class SignupController: UIViewController, UIPickerViewDelegate, UIPickerViewData
             }
             
             //moisture
-            self.firebasePostRef?.child("\(newUid)/data/moisture").setValue(0)
-            self.firebasePostRef?.child("\(newUid)/data/timeStamp").setValue("downloadURL")
+            self.firebasePostRef?.child("\(newUid)/data/moisture/moistureValue").setValue(0)
+            self.firebasePostRef?.child("\(newUid)/data/moisture/timeStamp").setValue(currentDateString)
+            
+            //home
+            self.firebasePostRef?.child("\(newUid)/data/home/address").setValue("Monash University")
+            self.firebasePostRef?.child("\(newUid)/data/home/address").setValue(-37.9107779)
+            self.firebasePostRef?.child("\(newUid)/data/home/address").setValue(145.1338631)
+            
+            //position
+            self.firebasePostRef?.child("\(newUid)/data/home/position").setValue("Monash University")
+            
+            //camera
+            self.firebasePostRef?.child("\(newUid)/data/camera/imageShource").setValue("https://firebasestorage.googleapis.com/v0/b/fit5140-3ff79.appspot.com/o/tumblr_o6d6a4cA7g1qgn992o1_500.png?alt=media&token=efe88106-e0ca-41bf-98cc-4ab2f036a39b")
+            self.firebasePostRef?.child("\(newUid)/data/camera/timeStamp").setValue(currentDateString)
+            
+            //video
+            self.firebasePostRef?.child("\(newUid)/data/video/videoSource").setValue("https://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4")
+            self.firebasePostRef?.child("\(newUid)/data/video/timeStamp").setValue(currentDateString)
+            
+            //position
+            self.firebasePostRef?.child("\(newUid)/data/position/\(currentDateString)/latitude").setValue(-37.9107779)
+            self.firebasePostRef?.child("\(newUid)/data/position/\(currentDateString)/longitude").setValue(145.1338631)
+            self.firebasePostRef?.child("\(newUid)/data/position/\(currentDateString)/timeStamp").setValue(currentDateString)
             
             //sensor control
             self.firebasePostRef?.child("\(newUid)/sensorControl/cameraMode").setValue(true)

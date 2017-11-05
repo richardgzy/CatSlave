@@ -26,7 +26,8 @@
 		13837EF51F8B69C7008E685C /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13837EF41F8B69C7008E685C /* MapViewController.swift */; };
 		735212B3A6EDF881925B453E /* Pods_CatSlave.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C59E3AAA4A86B60A03DFF43 /* Pods_CatSlave.framework */; };
 		79200C7C1FA700F00015D878 /* GeofencingSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79200C7B1FA700F00015D878 /* GeofencingSettingViewController.swift */; };
-		7987FD331F942CFE00916942 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7987FD321F942CFD00916942 /* GoogleService-Info.plist */; };
+		794C9A421FAEF98E00D84FF2 /* CatSlave in Resources */ = {isa = PBXBuildFile; fileRef = 794C9A411FAEF98D00D84FF2 /* CatSlave */; };
+		794C9A461FAEFA4C00D84FF2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 794C9A451FAEFA4B00D84FF2 /* GoogleService-Info.plist */; };
 		7987FD361F943AD600916942 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7987FD351F943AD600916942 /* LoginController.swift */; };
 		7987FD381F943F6600916942 /* SignupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7987FD371F943F6600916942 /* SignupController.swift */; };
 		79B5FA911FA5A03B00256DF8 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79B5FA901FA5A03B00256DF8 /* Utility.swift */; };
@@ -83,7 +84,8 @@
 		6CD383176EE546A696DE243F /* Pods-CatSlave.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CatSlave.release.xcconfig"; path = "Pods/Target Support Files/Pods-CatSlave/Pods-CatSlave.release.xcconfig"; sourceTree = "<group>"; };
 		79200C7A1FA5B0E60015D878 /* CatSlave-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CatSlave-Bridging-Header.h"; sourceTree = "<group>"; };
 		79200C7B1FA700F00015D878 /* GeofencingSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeofencingSettingViewController.swift; sourceTree = "<group>"; };
-		7987FD321F942CFD00916942 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		794C9A411FAEF98D00D84FF2 /* CatSlave */ = {isa = PBXFileReference; lastKnownFileType = folder; name = CatSlave; sourceTree = "<group>"; };
+		794C9A451FAEFA4B00D84FF2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7987FD351F943AD600916942 /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		7987FD371F943F6600916942 /* SignupController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupController.swift; sourceTree = "<group>"; };
 		79B5FA901FA5A03B00256DF8 /* Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
@@ -157,7 +159,8 @@
 				13837EB81F8B5ABA008E685C /* Assets.xcassets */,
 				13837EBA1F8B5ABA008E685C /* LaunchScreen.storyboard */,
 				13837EBD1F8B5ABA008E685C /* Info.plist */,
-				7987FD321F942CFD00916942 /* GoogleService-Info.plist */,
+				794C9A451FAEFA4B00D84FF2 /* GoogleService-Info.plist */,
+				794C9A411FAEF98D00D84FF2 /* CatSlave */,
 			);
 			path = CatSlave;
 			sourceTree = "<group>";
@@ -401,9 +404,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				13837EBC1F8B5ABA008E685C /* LaunchScreen.storyboard in Resources */,
-				7987FD331F942CFE00916942 /* GoogleService-Info.plist in Resources */,
+				794C9A421FAEF98E00D84FF2 /* CatSlave in Resources */,
 				13837EB91F8B5ABA008E685C /* Assets.xcassets in Resources */,
 				13837EB71F8B5ABA008E685C /* Main.storyboard in Resources */,
+				794C9A461FAEFA4C00D84FF2 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

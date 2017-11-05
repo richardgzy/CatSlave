@@ -111,7 +111,7 @@ class EditCatViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         
         //update profile
         
-        let data = compressImageSize(image: profileImageView.image!)
+        let data = Utility.compressImageSize(image: profileImageView.image!)
         let profileRef = Storage.storage().reference().child("\(currentUserId!).png")
         let metadata = StorageMetadata()
         metadata.contentType = "image/png"
@@ -128,23 +128,6 @@ class EditCatViewController: UIViewController, UIPickerViewDelegate, UIPickerVie
         _ = navigationController?.popViewController(animated: true)
     }
     
-    // compress image
-    func compressImageSize(image:UIImage) -> Data{
-        let originalImgSize = (UIImagePNGRepresentation(image)! as Data?)?.count
-        var zipImageData : Data? = nil
-        if originalImgSize!>1500 {
-            zipImageData = UIImageJPEGRepresentation(image,0.1)! as Data?
-        }else if originalImgSize!>600 {
-            zipImageData = UIImageJPEGRepresentation(image,0.2)! as Data?
-        }else if originalImgSize!>400 {
-            zipImageData = UIImageJPEGRepresentation(image,0.3)! as Data?
-        }else if originalImgSize!>300 {
-            zipImageData = UIImageJPEGRepresentation(image,0.4)! as Data?
-        }else if originalImgSize!>200 {
-            zipImageData = UIImageJPEGRepresentation(image,0.5)! as Data?
-        }
-        return zipImageData!
-    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

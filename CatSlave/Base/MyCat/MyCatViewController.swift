@@ -72,19 +72,19 @@ class MyCatViewController: UIViewController {
             
             let interval = sensorControlData["takingIntervalInSeconds"] as! Int
             switch interval{
-            case 30:
+            case 30000:
                 self.intervalSegmentControl.selectedSegmentIndex = 0
                 break
-            case 45:
+            case 45000:
                 self.intervalSegmentControl.selectedSegmentIndex = 1
                 break
-            case 60:
+            case 60000:
                 self.intervalSegmentControl.selectedSegmentIndex = 2
                 break
-            case 300:
+            case 300000:
                 self.intervalSegmentControl.selectedSegmentIndex = 3
                 break
-            case 600:
+            case 600000:
                 self.intervalSegmentControl.selectedSegmentIndex = 4
                 break
             default:
@@ -137,22 +137,22 @@ class MyCatViewController: UIViewController {
     @IBAction func intervalSegmentControl(_ sender: Any) {
         switch intervalSegmentControl.selectedSegmentIndex{
         case 0:
-            appDelegate.cameraTakingInterval = 30
+            appDelegate.cameraTakingInterval = 30000
             break
         case 1:
-            appDelegate.cameraTakingInterval = 45
+            appDelegate.cameraTakingInterval = 45000
             break
         case 2:
-            appDelegate.cameraTakingInterval = 60
+            appDelegate.cameraTakingInterval = 60000
             break
         case 3:
-            appDelegate.cameraTakingInterval = 300
+            appDelegate.cameraTakingInterval = 300000
             break
         case 4:
-            appDelegate.cameraTakingInterval = 600
+            appDelegate.cameraTakingInterval = 600000
             break
         default:
-            appDelegate.cameraTakingInterval = 30
+            appDelegate.cameraTakingInterval = 30000
             break
         }
         self.firebaseUpdateRef!.child("\(currentUserId!)/sensorControl/takingIntervalInSeconds").setValue(appDelegate.cameraTakingInterval)

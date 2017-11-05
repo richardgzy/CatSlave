@@ -68,6 +68,7 @@ class SignupController: UIViewController, UIPickerViewDelegate, UIPickerViewData
         let rePassword = renterPasswordtf.text!
         let catName = catNametf.text!
         let catAge = Int(pickerData[catAgePicker.selectedRow(inComponent: 0)])
+        let profileImage = profileImageView.image!
         
         // check blank input
         if (email == "" || password == "" || rePassword == "")
@@ -89,9 +90,37 @@ class SignupController: UIViewController, UIPickerViewDelegate, UIPickerViewData
                 return
             }
             newUid = (user?.uid)!
+        
+            //set up user information and defalut value
+            self.firebasePostRef?.child("\(newUid)/data").setValue(["catName": catName])
+            self.firebasePostRef?.child("\(newUid)/data/catAge").setValue(catAge)
+            self.firebasePostRef?.child("\(newUid)/data/distanceForNotification").setValue(100)
+            self.firebasePostRef?.child("\(newUid)/data/geofencingSwitch").setValue(false)
+            self.firebasePostRef?.child("\(newUid)/data/trackDistanceMode").setValue("me")
+            
+            //upload profile image
+            let data = Utility.compressImageSize(image: profileImage)
+            let profileRef = Storage.storage().reference().child("\(newUid).png")
+            let metadata = StorageMetadata()
+            metadata.contentType = "image/png"
+            _ = profileRef.putData(data, metadata: metadata) { (metadata, error) in
+                guard error == nil else {
+                    self.showFailMessage(view: self.view, message: "Error occured when uploading profile image")
+                    return
+                }
+                let downloadURL = metadata!.downloadURL()?.absoluteString
+                self.firebasePostRef?.child("\(newUid)/data/profile").setValue(downloadURL)
+            }
+            
+            //moisture
+            self.firebasePostRef?.child("\(newUid)/data/moisture").setValue(0)
+            self.firebasePostRef?.child("\(newUid)/data/timeStamp").setValue("downloadURL")
+            
+            //sensor control
+            self.firebasePostRef?.child("\(newUid)/sensorControl/cameraMode").setValue(true)
+            self.firebasePostRef?.child("\(newUid)/sensorControl/takingIntervalInSeconds").setValue(30000)
         }
         
-        firebasePostRef!.child("\(newUid)").setValue(newUid)
     }
     
     //dismiss sign up view and go back to log in view

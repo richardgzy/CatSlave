@@ -20,6 +20,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     var locationManager = CLLocationManager()
     var positionList = [Position]()
     var catCurrentPosition: Position?
+    var catOutOfRange = false
     var userLocation: CLLocation?
     var geodesic: MKGeodesicPolyline?
     var currentUserID: String?
@@ -59,6 +60,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
                 let dictionary = snapshot.value as! [String: AnyObject]
                 let positionDataList = dictionary["position"] as! [String: AnyObject]
                 
+//                positionDataList.sorted(by: <#T##((key: String, value: AnyObject), (key: String, value: AnyObject)) throws -> Bool#>)
+                
                 for (positionData) in positionDataList{
                     let value = positionData.value as! [String: AnyObject]
                     self.parseAndAppendCatPosition(positionData: value)
@@ -82,15 +85,20 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
                     if self.distanceMode == "home"{
                         //track distance to home
                         let distanceInMeters = self.catCurrentPosition?.coordinate!.distance(from: self.homeCoordinate!)
-                        if distanceInMeters! >= self.distanceForNotification!{
+                        if distanceInMeters! >= self.distanceForNotification! && !self.catOutOfRange{
                             self.showAlertMessage(message: "Cat run too far from home!")
+                        }else if distanceInMeters! < self.distanceForNotification! && self.catOutOfRange{
+                            self.catOutOfRange = false
                         }
                     }else{
                         //track distance to me
                         if self.userLocation != nil{
                             let distanceInMeters = self.catCurrentPosition?.coordinate!.distance(from: self.userLocation!)
-                            if distanceInMeters! >= self.distanceForNotification!{
+                            if distanceInMeters! >= self.distanceForNotification! && !self.catOutOfRange{
+                                self.catOutOfRange = true
                                 self.showAlertMessage(message: "Cat run too far from you!")
+                            }else if distanceInMeters! < self.distanceForNotification! && self.catOutOfRange{
+                                self.catOutOfRange = false
                             }
                         }
                     }
@@ -126,7 +134,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         mapView.removeAnnotations(allAnnotation)
         
         let coordinate = position.coordinate!.coordinate
-        let dateString = Utility.formatDateToString(date: position.timeStamp!, dateFormat: "YYYY-MM-DD, hh:mm:ss")
+        let dateString = Utility.formatDateToString(date: position.timeStamp!, dateFormat: "MM-dd, HH:mm:ss")
         let annotation = CatAnnotation(newCoordinate: coordinate, newTItle: "Meow!", newSubtitle: dateString, newImage: UIImage(named: "icons8-Black Cat Filled-64")!)
         
         self.mapView.addAnnotation(annotation)
@@ -212,15 +220,12 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     //history button clicked, show cat history route with polyline on map
     @IBAction func historyButtonClick(_ sender: Any) {
         if historyButton?.title == "History"{
-//            let point1 = CLLocationCoordinate2DMake(-37.8840, 145.0266);
-//            let point2 = CLLocationCoordinate2DMake(-37.910, 145.134);
-//            let point3 = CLLocationCoordinate2DMake(-37.8108, 144.9631);
-            
             var points = [CLLocationCoordinate2D]()
             for position in positionList{
                 points.append((position.coordinate?.coordinate)!)
             }
             
+            //draw a line to connect these points
             createPolyline(mapView: mapView, points: points)
             self.mapView.showAnnotations(self.mapView.annotations, animated: true)
             historyButton?.title = "Clear History"

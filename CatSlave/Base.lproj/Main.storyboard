@@ -150,14 +150,14 @@
                                 <rect key="frame" x="20" y="77" width="374" height="21"/>
                                 <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Camera Settings" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LaR-6n-eZT">
                                 <rect key="frame" x="20" y="292" width="374" height="21"/>
                                 <color key="backgroundColor" red="0.99936085939407349" green="0.14975595474243164" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Camera Mode (Photo/Video):" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GJK-LZ-iIL">
@@ -189,7 +189,7 @@
                                 <rect key="frame" x="20" y="443" width="374" height="21"/>
                                 <color key="backgroundColor" red="0.99936085939407349" green="0.14975595474243164" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Age:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KWZ-Q3-999">
@@ -756,9 +756,8 @@ MBProgressHUD: show message and waiting indicator</string>
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sie-TD-9Ly" customClass="MyButton" customModule="CatSlave" customModuleProvider="target">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sie-TD-9Ly" customClass="MyButton" customModule="CatSlave" customModuleProvider="target">
                                 <rect key="frame" x="28" y="686" width="150" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Sign Up"/>
                                 <connections>
                                     <action selector="signup:" destination="X8u-tp-BQs" eventType="touchUpInside" id="brZ-cl-Uud"/>
@@ -837,9 +836,8 @@ MBProgressHUD: show message and waiting indicator</string>
                                     <action selector="selectImageButton:" destination="X8u-tp-BQs" eventType="touchUpInside" id="7vY-4i-tX2"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FTV-RQ-nx0" customClass="MyButton" customModule="CatSlave" customModuleProvider="target">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FTV-RQ-nx0" customClass="MyButton" customModule="CatSlave" customModuleProvider="target">
                                 <rect key="frame" x="231" y="686" width="150" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Cancel"/>
                                 <connections>
                                     <action selector="cancel:" destination="X8u-tp-BQs" eventType="touchUpInside" id="GJu-h4-P6G"/>
@@ -848,6 +846,8 @@ MBProgressHUD: show message and waiting indicator</string>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="bottom" secondItem="sie-TD-9Ly" secondAttribute="bottom" constant="20" symbolic="YES" id="0Sk-Zh-cmh"/>
+                            <constraint firstItem="FTV-RQ-nx0" firstAttribute="trailing" secondItem="8zD-nS-C0x" secondAttribute="trailing" id="25F-Aa-Ok2"/>
                             <constraint firstItem="8zD-nS-C0x" firstAttribute="top" secondItem="vHA-k6-qxO" secondAttribute="bottom" constant="8" symbolic="YES" id="3Yv-dv-Tzh"/>
                             <constraint firstItem="ZZ3-wJ-lrf" firstAttribute="top" secondItem="JqP-42-owH" secondAttribute="bottom" constant="25" id="4VB-zj-xYh"/>
                             <constraint firstItem="LNE-m1-Qqt" firstAttribute="top" secondItem="6iT-Gj-zgy" secondAttribute="top" constant="20" id="64u-Gk-lut"/>
@@ -866,6 +866,7 @@ MBProgressHUD: show message and waiting indicator</string>
                             <constraint firstItem="0BC-X1-fxb" firstAttribute="top" secondItem="FZf-zR-8a0" secondAttribute="bottom" constant="30" id="N8Z-jW-zzJ"/>
                             <constraint firstItem="6iT-Gj-zgy" firstAttribute="trailing" secondItem="11Q-lK-Wx2" secondAttribute="trailing" constant="40" id="O4M-Hb-5ri"/>
                             <constraint firstItem="wK4-Gw-tnh" firstAttribute="centerX" secondItem="5oy-BR-n8g" secondAttribute="centerX" id="PG4-Bw-PI0"/>
+                            <constraint firstItem="sie-TD-9Ly" firstAttribute="leading" secondItem="6iT-Gj-zgy" secondAttribute="leading" constant="28" id="S0m-tE-YbC"/>
                             <constraint firstItem="8mV-Ga-dq9" firstAttribute="top" secondItem="vbe-oN-DKO" secondAttribute="bottom" constant="5" id="U7m-pu-UxY"/>
                             <constraint firstItem="wK4-Gw-tnh" firstAttribute="top" secondItem="0BC-X1-fxb" secondAttribute="bottom" constant="20" id="XUa-SW-daj"/>
                             <constraint firstItem="6iT-Gj-zgy" firstAttribute="trailing" secondItem="ZZ3-wJ-lrf" secondAttribute="trailing" constant="143" id="Xbd-4L-3OS"/>
@@ -874,6 +875,7 @@ MBProgressHUD: show message and waiting indicator</string>
                             <constraint firstItem="FZf-zR-8a0" firstAttribute="centerX" secondItem="5oy-BR-n8g" secondAttribute="centerX" id="cH9-MR-9By"/>
                             <constraint firstItem="6iT-Gj-zgy" firstAttribute="trailing" secondItem="wK4-Gw-tnh" secondAttribute="trailing" constant="40" id="ckp-3r-gFd"/>
                             <constraint firstItem="6iT-Gj-zgy" firstAttribute="trailing" secondItem="FZf-zR-8a0" secondAttribute="trailing" constant="40" id="dGQ-se-tZR"/>
+                            <constraint firstItem="sie-TD-9Ly" firstAttribute="baseline" secondItem="FTV-RQ-nx0" secondAttribute="baseline" id="fdF-hj-b7U"/>
                             <constraint firstItem="vbe-oN-DKO" firstAttribute="top" secondItem="JqP-42-owH" secondAttribute="bottom" constant="25" id="gKc-Iq-RtI"/>
                             <constraint firstItem="wK4-Gw-tnh" firstAttribute="leading" secondItem="6iT-Gj-zgy" secondAttribute="leading" constant="40" id="h2q-UP-SUu"/>
                             <constraint firstItem="LNE-m1-Qqt" firstAttribute="leading" secondItem="0BC-X1-fxb" secondAttribute="leading" id="h7b-VI-jAx"/>
@@ -881,8 +883,10 @@ MBProgressHUD: show message and waiting indicator</string>
                             <constraint firstItem="6iT-Gj-zgy" firstAttribute="trailing" secondItem="JqP-42-owH" secondAttribute="trailing" constant="40" id="lHy-Og-xXE"/>
                             <constraint firstItem="11Q-lK-Wx2" firstAttribute="leading" secondItem="6iT-Gj-zgy" secondAttribute="leading" constant="40" id="lTu-kP-dLr"/>
                             <constraint firstItem="6iT-Gj-zgy" firstAttribute="trailing" secondItem="vHA-k6-qxO" secondAttribute="trailing" constant="33" id="omH-S5-fsQ"/>
+                            <constraint firstItem="FTV-RQ-nx0" firstAttribute="leading" secondItem="8zD-nS-C0x" secondAttribute="leading" id="qZX-Qt-uyM"/>
                             <constraint firstItem="JqP-42-owH" firstAttribute="leading" secondItem="6iT-Gj-zgy" secondAttribute="leading" constant="40" id="rf6-Eo-23d"/>
                             <constraint firstItem="vbe-oN-DKO" firstAttribute="leading" secondItem="8mV-Ga-dq9" secondAttribute="leading" id="szl-Gm-qEV"/>
+                            <constraint firstItem="sie-TD-9Ly" firstAttribute="centerX" secondItem="8mV-Ga-dq9" secondAttribute="centerX" id="vwT-Wv-rj3"/>
                             <constraint firstItem="vHA-k6-qxO" firstAttribute="trailing" secondItem="8zD-nS-C0x" secondAttribute="trailing" id="xIQ-Ll-6OC"/>
                             <constraint firstItem="FZf-zR-8a0" firstAttribute="leading" secondItem="6iT-Gj-zgy" secondAttribute="leading" constant="40" id="xK4-zN-fvo"/>
                         </constraints>

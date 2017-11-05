@@ -23,8 +23,32 @@ struct Utility {
     //convert date to string
     static func formatDateToString(date: Date, dateFormat: String)->String{
         let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "en_AU")
         dateFormatter.dateFormat = dateFormat
         let dateString = dateFormatter.string(from: date)
         return dateString
+    }
+    
+    // compress image
+    static func compressImageSize(image:UIImage) -> Data{
+        let originalImgSize = (UIImagePNGRepresentation(image)! as Data?)?.count
+        var zipImageData : Data? = nil
+        if originalImgSize!>1500 {
+            zipImageData = UIImageJPEGRepresentation(image,0.1)! as Data?
+        }else if originalImgSize!>600 {
+            zipImageData = UIImageJPEGRepresentation(image,0.2)! as Data?
+        }else if originalImgSize!>400 {
+            zipImageData = UIImageJPEGRepresentation(image,0.3)! as Data?
+        }else if originalImgSize!>300 {
+            zipImageData = UIImageJPEGRepresentation(image,0.4)! as Data?
+        }else if originalImgSize!>200 {
+            zipImageData = UIImageJPEGRepresentation(image,0.5)! as Data?
+        }
+        return zipImageData!
+    }
+    
+    //get current date and time String
+    static func getCurrentDateTime(){
+        
     }
 }

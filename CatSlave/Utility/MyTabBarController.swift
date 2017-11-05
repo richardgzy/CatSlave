@@ -14,7 +14,7 @@ class MyTabBarController: UITabBarController {
         super.viewDidLoad()
         
         self.tabBar.barTintColor = UIColor.white
-        self.tabBar.tintColor = UIColor(red: 106/255.0, green: 117/255.0, blue: 225/255.0, alpha: 1)
+        self.tabBar.tintColor = UIColor(hexString: CONST.MAIN_RED)
         
         for item in self.tabBar.items! {
             let barItem = item as UITabBarItem

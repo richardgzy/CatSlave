@@ -10,12 +10,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CatSlave/Base/MapView/MapViewController.swift"
-            timestampString = "531530839.175067"
+            timestampString = "531554274.070692"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "154"
-            endingLineNumber = "154"
-            landmarkName = "mapView(_:viewFor:)"
+            startingLineNumber = "138"
+            endingLineNumber = "138"
+            landmarkName = "showCatCurrentPosition(position:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

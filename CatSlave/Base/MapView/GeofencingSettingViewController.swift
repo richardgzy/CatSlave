@@ -101,7 +101,7 @@ class GeofencingSettingViewController: UIViewController {
     //distance slider changed
     @IBAction func distanceSlider(_ sender: Any) {
         let distance = distanceSlider.value
-        distanceLabel.text = String(format: "%.2f", distance)
+        distanceLabel.text = String(format: "%.2f", distance) + "m"
     }
     
     override func didReceiveMemoryWarning() {

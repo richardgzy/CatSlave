@@ -17,7 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var currentUserID: String?
     var handle: AuthStateDidChangeListenerHandle?
     //default value
-    var cameraTakingInterval: Int = 30
+    var cameraTakingInterval: Int = 30000
     var cameraTakingModeIsPhoto: Bool = true
     
 
